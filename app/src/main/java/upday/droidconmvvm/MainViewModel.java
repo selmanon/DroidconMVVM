@@ -2,6 +2,7 @@ package upday.droidconmvvm;
 
 import android.support.annotation.NonNull;
 
+import com.quanturium.bouquet.annotations.RxLogger;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -30,6 +31,7 @@ public class MainViewModel {
         mSchedulerProvider = schedulerProvider;
     }
 
+    @RxLogger
     @NonNull
     public Observable<String> getGreeting() {
         return mSelectedLanguage
@@ -38,6 +40,7 @@ public class MainViewModel {
                 .flatMap(mDataModel::getGreetingByLanguageCode);
     }
 
+    @RxLogger
     @NonNull
     public Observable<List<Language>> getSupportedLanguages() {
         return mDataModel.getSupportedLanguages();
