@@ -17,37 +17,37 @@ import upday.droidconmvvm.schedulers.ISchedulerProvider;
 public class MainViewModel {
 
     @NonNull
-    private final IDataModel mDataModel;
+    private final IDataModel dataModel;
 
     @NonNull
-    private final BehaviorSubject<Language> mSelectedLanguage = BehaviorSubject.create();
+    private final BehaviorSubject<Language> selectedLanguage = BehaviorSubject.create();
 
     @NonNull
-    private final ISchedulerProvider mSchedulerProvider;
+    private final ISchedulerProvider schedulerProvider;
 
     public MainViewModel(@NonNull final IDataModel dataModel,
                          @NonNull final ISchedulerProvider schedulerProvider) {
-        mDataModel = dataModel;
-        mSchedulerProvider = schedulerProvider;
+        this.dataModel = dataModel;
+        this.schedulerProvider = schedulerProvider;
     }
 
     @RxLogger
     @NonNull
     public Observable<String> getGreeting() {
-        return mSelectedLanguage
-                .observeOn(mSchedulerProvider.computation())
+        return selectedLanguage
+                .observeOn(schedulerProvider.computation())
                 .map(Language::getCode)
-                .flatMap(mDataModel::getGreetingByLanguageCode);
+                .flatMap(dataModel::getGreetingByLanguageCode);
     }
 
     @RxLogger
     @NonNull
     public Observable<List<Language>> getSupportedLanguages() {
-        return mDataModel.getSupportedLanguages();
+        return dataModel.getSupportedLanguages();
     }
 
     public void languageSelected(@NonNull final Language language) {
-        mSelectedLanguage.onNext(language);
+        selectedLanguage.onNext(language);
     }
 
 }

@@ -19,35 +19,35 @@ import upday.droidconmvvm.model.Language;
 public class MainActivity extends AppCompatActivity {
 
     @NonNull
-    private CompositeDisposable mCompositeDisposable;
+    private CompositeDisposable compositeDisposable;
 
     @NonNull
-    private MainViewModel mViewModel;
+    private MainViewModel viewModel;
 
     @Nullable
-    private TextView mGreetingView;
+    private TextView greetingView;
 
     @Nullable
-    private Spinner mLanguagesSpinner;
+    private Spinner languagesSpinner;
 
     @Nullable
-    private LanguageSpinnerAdapter mLanguageSpinnerAdapter;
+    private LanguageSpinnerAdapter languageSpinnerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mViewModel = getViewModel();
+        viewModel = getViewModel();
         setupViews();
     }
 
     private void setupViews() {
-        mGreetingView = (TextView) findViewById(R.id.greeting);
+        greetingView = (TextView) findViewById(R.id.greeting);
 
-        mLanguagesSpinner = (Spinner) findViewById(R.id.languages);
-        assert mLanguagesSpinner != null;
-        mLanguagesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        languagesSpinner = (Spinner) findViewById(R.id.languages);
+        assert languagesSpinner != null;
+        languagesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(final AdapterView<?> parent, final View view,
                                        final int position, final long id) {
@@ -74,36 +74,36 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void bind() {
-        mCompositeDisposable = new CompositeDisposable();
+        compositeDisposable = new CompositeDisposable();
 
-        mCompositeDisposable.add(mViewModel.getGreeting()
+        compositeDisposable.add(viewModel.getGreeting()
                                     .subscribeOn(Schedulers.computation())
                                     .observeOn(AndroidSchedulers.mainThread())
                                     .subscribe(this::setGreeting));
 
-        mCompositeDisposable.add(mViewModel.getSupportedLanguages()
+        compositeDisposable.add(viewModel.getSupportedLanguages()
                                     .subscribeOn(Schedulers.computation())
                                     .observeOn(AndroidSchedulers.mainThread())
                                     .subscribe(this::setLanguages));
     }
 
     private void unBind() {
-        mCompositeDisposable.clear();
+        compositeDisposable.clear();
     }
 
     private void setGreeting(@NonNull final String greeting) {
-        assert mGreetingView != null;
+        assert greetingView != null;
 
-        mGreetingView.setText(greeting);
+        greetingView.setText(greeting);
     }
 
     private void setLanguages(@NonNull final List<Language> languages) {
-        assert mLanguagesSpinner != null;
+        assert languagesSpinner != null;
 
-        mLanguageSpinnerAdapter = new LanguageSpinnerAdapter(this,
+        languageSpinnerAdapter = new LanguageSpinnerAdapter(this,
                                                              R.layout.language_item,
                                                              languages);
-        mLanguagesSpinner.setAdapter(mLanguageSpinnerAdapter);
+        languagesSpinner.setAdapter(languageSpinnerAdapter);
     }
 
     @NonNull
@@ -112,9 +112,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void itemSelected(final int position) {
-        assert mLanguageSpinnerAdapter != null;
+        assert languageSpinnerAdapter != null;
 
-        Language languageSelected = mLanguageSpinnerAdapter.getItem(position);
-        mViewModel.languageSelected(languageSelected);
+        Language languageSelected = languageSpinnerAdapter.getItem(position);
+        viewModel.languageSelected(languageSelected);
     }
 }

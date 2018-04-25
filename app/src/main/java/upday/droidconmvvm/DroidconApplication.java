@@ -11,15 +11,15 @@ import upday.droidconmvvm.schedulers.SchedulerProvider;
 public class DroidconApplication extends Application {
 
     @NonNull
-    private final IDataModel mDataModel;
+    private final IDataModel dataModel;
 
     public DroidconApplication() {
-        mDataModel = new DataModel();
+        dataModel = new DataModel();
     }
 
     @NonNull
     public IDataModel getDataModel() {
-        return mDataModel;
+        return dataModel;
     }
 
     @NonNull
